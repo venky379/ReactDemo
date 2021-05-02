@@ -1,10 +1,9 @@
-import logo from './logo.svg';
 import './App.css';
-  
-  import {useState,useEffect,useCallback} from 'react';
+import {useState,useEffect,useCallback} from 'react';
 
 function App() {
-  const [invoice, setInvoice] = useState(null);
+  const [data, setData] = useState(null);
+  const [filterData, setFilterData] = useState(null);
   const [launchYear, setlaunchYear] = useState(null);
 
   const getInvoice = useCallback(async () => {
@@ -13,8 +12,8 @@ function App() {
       .then((resp)=>{
         const obj = [...new Map(resp.map(item => [JSON.stringify(item.launch_year), item.launch_year])).values()];
         setlaunchYear(obj)
-        console.log(resp,"ddddddddddddddddddddddddddd")
-        setInvoice(resp)
+        setData(resp)
+        setFilterData(resp.filter((item)=>item.launch_year === "2020"))
       })
       .catch((error)=>{
         console.log(error)
@@ -24,15 +23,10 @@ function App() {
   useEffect(() => {
     getInvoice();
   }, [getInvoice]);
-
-  if (!invoice) {
-    return null;
+  const setMenuOpen = (year) => {
+    const filtereddata = data.filter((item)=>item.launch_year === year)
+    setFilterData(filtereddata)
   }
-
-const filterdata = () =>{
-  launchYear.map((item)=>
-  <div>{item}</div>)
-}
   return (
     <div style={{backgroundColor:'#F5F5F5'}}>
        <div className="row">
@@ -45,29 +39,29 @@ const filterdata = () =>{
             {
                 launchYear.map((item)=>
                 <div className='col-md-2 col-sm-2 col-lg-2'>
-                  <div style={{textAlign:'center',backgroundColor:'green',marginRight:'20px',marginLeft:'20px',marginBottom:'2px',marginTop:10,border: '2px solid green',
-                      borderRadius: '10px'}}>{item}</div>
+                  <button onClick={() => setMenuOpen(item)} style={{width:100,textAlign:'center',backgroundColor:'green',marginRight:'20px',marginLeft:'20px',marginBottom:'2px',marginTop:10,border: '2px solid green',
+                      borderRadius: '10px'}}>{item}</button>
                 </div>
                 )
               }
               </div>
             <div style={{textAlign:'center',marginTop:20}}>SuccessFull Launch</div>
               <div className='col-md-2 col-sm-2 col-lg-2'>
-                      <div style={{textAlign:'center',backgroundColor:'green',marginRight:'20px',marginLeft:'20px',marginBottom:'2px',marginTop:10,border: '2px solid green',
-                          borderRadius: '10px'}}>True</div>
+                    <button style={{width:100,textAlign:'center',backgroundColor:'green',marginRight:'20px',marginLeft:'20px',marginBottom:'2px',marginTop:10,border: '2px solid green',
+                            borderRadius: '10px'}}>True</button>
                     </div>
                     <div className='col-md-2 col-sm-2 col-lg-2'>
-                    <div style={{textAlign:'center',backgroundColor:'green',marginRight:'20px',marginLeft:'20px',marginBottom:'2px',marginTop:10,border: '2px solid green',
-                        borderRadius: '10px'}}>False</div>
+                    <button style={{width:100,textAlign:'center',backgroundColor:'green',marginRight:'20px',marginLeft:'20px',marginBottom:'2px',marginTop:10,border: '2px solid green',
+                      borderRadius: '10px'}}>False</button>
                   </div>
                   <div style={{textAlign:'center',marginTop:50}}>SuccessFull Langing</div>
               <div className='col-md-2 col-sm-2 col-lg-2'>
-                      <div style={{textAlign:'center',backgroundColor:'green',marginRight:'20px',marginLeft:'20px',marginBottom:'2px',marginTop:10,border: '2px solid green',
-                          borderRadius: '10px'}}>True</div>
+                    <button style={{width:100,textAlign:'center',backgroundColor:'green',marginRight:'20px',marginLeft:'20px',marginBottom:'2px',marginTop:10,border: '2px solid green',
+                            borderRadius: '10px'}}>True</button>
                     </div>
                     <div className='col-md-2 col-sm-2 col-lg-2'>
-                    <div style={{textAlign:'center',backgroundColor:'green',marginRight:'20px',marginLeft:'20px',marginBottom:'2px',marginTop:10,border: '2px solid green',
-                        borderRadius: '10px'}}>False</div>
+                    <button style={{width:100,textAlign:'center',backgroundColor:'green',marginRight:'20px',marginLeft:'20px',marginBottom:'2px',marginTop:10,border: '2px solid green',
+                      borderRadius: '10px'}}>False</button>
               </div>
             </div>
         </div>
@@ -76,7 +70,7 @@ const filterdata = () =>{
           
          <div className='col-lg-2-80 col-md-2-80 col-sm-1'style={{marginTop:10}}>
          {
-              invoice.map((item)=>
+              filterData.map((item)=>
               <div className='col-md-2 col-sm-1 col-lg-4'>
                 <div style={{height:'280px',backgroundColor:'white',marginBottom:5,marginLeft:5,marginRight:5,padding:10,}}>
                   <img style={{height:'150px',width:'150px',marginLeft:'20px'}}src={item.links.mission_patch}/>
