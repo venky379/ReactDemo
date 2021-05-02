@@ -1,5 +1,7 @@
+import logo from './logo.svg';
 import './App.css';
-import {useState,useEffect,useCallback} from 'react';
+  
+  import {useState,useEffect,useCallback} from 'react';
 
 function App() {
   const [data, setData] = useState(null);
@@ -12,8 +14,10 @@ function App() {
       .then((resp)=>{
         const obj = [...new Map(resp.map(item => [JSON.stringify(item.launch_year), item.launch_year])).values()];
         setlaunchYear(obj)
+        console.log(resp,"ddddddddddddddddddddddddddd")
         setData(resp)
-        setFilterData(resp.filter((item)=>item.launch_year === "2020"))
+        const filtereddata = resp.filter((item)=>item.launch_year === '2020')
+        setFilterData(filtereddata)
       })
       .catch((error)=>{
         console.log(error)
@@ -23,9 +27,16 @@ function App() {
   useEffect(() => {
     getInvoice();
   }, [getInvoice]);
+
+  if (!data) {
+    return null;
+  }
+
   const setMenuOpen = (year) => {
+    // console.log(data)
     const filtereddata = data.filter((item)=>item.launch_year === year)
     setFilterData(filtereddata)
+    // console.log(year,"++++++++++++++++")
   }
   return (
     <div style={{backgroundColor:'#F5F5F5'}}>
