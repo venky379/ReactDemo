@@ -1,10 +1,9 @@
-import logo from './logo.svg';
 import './App.css';
-  
-  import {useState,useEffect,useCallback} from 'react';
+import {useState,useEffect,useCallback} from 'react';
 
 function App() {
   const [data, setData] = useState(null);
+  const [statusLaunch,setStatusLaunch] = useState(['True','False'])
   const [filterData, setFilterData] = useState(null);
   const [launchYear, setlaunchYear] = useState(null);
 
@@ -14,10 +13,9 @@ function App() {
       .then((resp)=>{
         const obj = [...new Map(resp.map(item => [JSON.stringify(item.launch_year), item.launch_year])).values()];
         setlaunchYear(obj)
-        console.log(resp,"ddddddddddddddddddddddddddd")
-        setData(resp)
         const filtereddata = resp.filter((item)=>item.launch_year === '2020')
         setFilterData(filtereddata)
+        setData(resp)
       })
       .catch((error)=>{
         console.log(error)
@@ -32,53 +30,48 @@ function App() {
     return null;
   }
 
-  const setMenuOpen = (year) => {
-    // console.log(data)
+  const FilterByDate = (year) => {
     const filtereddata = data.filter((item)=>item.launch_year === year)
     setFilterData(filtereddata)
-    // console.log(year,"++++++++++++++++")
   }
   return (
     <div style={{backgroundColor:'#F5F5F5'}}>
        <div className="row">
          <div>SpaceX Launch Programs</div>
          <div className='col-lg-2-20 col-md-2-20 col-sm-1'>
-           <div style={{margin:20,backgroundColor:'white',padding:10}}>
+           <div style={{margin:10,backgroundColor:'white',padding:10,height:450}}>
             <div>Filters</div>
             <div style={{textAlign:'center',marginTop:20}}>Launch Years</div>
             <div className='row'>
             {
                 launchYear.map((item)=>
                 <div className='col-md-2 col-sm-2 col-lg-2'>
-                  <button onClick={() => setMenuOpen(item)} style={{width:100,textAlign:'center',backgroundColor:'green',marginRight:'20px',marginLeft:'20px',marginBottom:'2px',marginTop:10,border: '2px solid green',
+                  <button onClick={() => FilterByDate(item)} style={{width:100,textAlign:'center',backgroundColor:'green',marginRight:'20px',marginLeft:'20px',marginBottom:'2px',marginTop:10,border: '2px solid green',
                       borderRadius: '10px'}}>{item}</button>
                 </div>
                 )
               }
               </div>
             <div style={{textAlign:'center',marginTop:20}}>SuccessFull Launch</div>
-              <div className='col-md-2 col-sm-2 col-lg-2'>
-                    <button style={{width:100,textAlign:'center',backgroundColor:'green',marginRight:'20px',marginLeft:'20px',marginBottom:'2px',marginTop:10,border: '2px solid green',
-                            borderRadius: '10px'}}>True</button>
-                    </div>
-                    <div className='col-md-2 col-sm-2 col-lg-2'>
-                    <button style={{width:100,textAlign:'center',backgroundColor:'green',marginRight:'20px',marginLeft:'20px',marginBottom:'2px',marginTop:10,border: '2px solid green',
-                      borderRadius: '10px'}}>False</button>
-                  </div>
-                  <div style={{textAlign:'center',marginTop:50}}>SuccessFull Langing</div>
-              <div className='col-md-2 col-sm-2 col-lg-2'>
-                    <button style={{width:100,textAlign:'center',backgroundColor:'green',marginRight:'20px',marginLeft:'20px',marginBottom:'2px',marginTop:10,border: '2px solid green',
-                            borderRadius: '10px'}}>True</button>
-                    </div>
-                    <div className='col-md-2 col-sm-2 col-lg-2'>
-                    <button style={{width:100,textAlign:'center',backgroundColor:'green',marginRight:'20px',marginLeft:'20px',marginBottom:'2px',marginTop:10,border: '2px solid green',
-                      borderRadius: '10px'}}>False</button>
-              </div>
+            {
+              statusLaunch.map((item)=>
+                <div className='col-md-2 col-sm-2 col-lg-2'>
+                  <button style={{width:100,textAlign:'center',backgroundColor:'green',marginRight:'20px',marginLeft:'20px',marginBottom:'2px',marginTop:10,border: '2px solid green',
+                          borderRadius: '10px'}}>{item}</button>
+                </div>
+              )
+            }
+            <div style={{textAlign:'center',marginTop:50}}>SuccessFull Langing</div>
+            {
+              statusLaunch.map((item)=>
+                <div className='col-md-2 col-sm-2 col-lg-2'>
+                  <button style={{width:100,textAlign:'center',backgroundColor:'green',marginRight:'20px',marginLeft:'20px',marginBottom:'2px',marginTop:10,border: '2px solid green',
+                          borderRadius: '10px'}}>{item}</button>
+                </div>
+              )
+            } 
             </div>
-        </div>
-          
-            
-          
+          </div>  
          <div className='col-lg-2-80 col-md-2-80 col-sm-1'style={{marginTop:10}}>
          {
               filterData.map((item)=>
