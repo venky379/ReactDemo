@@ -188,4 +188,26 @@
     width: 25%;
   }
 }
-
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+div {
+  line-height: 1.6;
+}
+.btn {
+  width:100px;
+  text-align:center;
+  background-color:#7BF38F;
+  margin-right:20px;
+  margin-left:20px;
+  margin-bottom:2px;
+  margin-top:10;
+  border: 2px solid green;
+  border-radius: 5px;
+}
+.active, .btn:hover {
+  background-color: #666;
+  color: white;
+}
